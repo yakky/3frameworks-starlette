@@ -1,0 +1,11 @@
+starlette
+uvicorn
+databases
+sqlalchemy
+aiosqlite
+starlette-auth-toolkit
+orm
+itsdangerous
+marshmallow
+async-property
+asgiref
