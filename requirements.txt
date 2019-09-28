@@ -6,6 +6,3 @@ aiosqlite
 starlette-auth-toolkit
 orm
 itsdangerous
-marshmallow
-async-property
-asgiref

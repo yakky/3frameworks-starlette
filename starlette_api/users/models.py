@@ -14,12 +14,12 @@ class User(orm.Model):
     username = orm.String(max_length=50, unique=True)
 
     @property
-    def auth_token(self):
+    def auth_token(self) -> str:
         s = Serializer(str(settings.SECRET_KEY))
         return s.dumps({"id": self.id}).decode()
 
     @staticmethod
-    async def verify_auth_token(token):
+    async def verify_auth_token(token: str) -> "User":
         s = Serializer(str(settings.SECRET_KEY))
         try:
             data = s.loads(token)
@@ -29,7 +29,7 @@ class User(orm.Model):
         return user
 
     @classmethod
-    async def get_or_create(cls, data, **kwargs):
+    async def get_or_create(cls, data: dict, **kwargs) -> "User":
         try:
             return await cls.objects.get(id=data["id"])
         except:

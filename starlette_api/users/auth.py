@@ -1,16 +1,15 @@
 import typing
 
 import orm
-from starlette import authentication as auth
 from starlette_auth_toolkit.base.backends import BaseTokenAuth
 
-from . import models as auth_models
+from . import models as users_models
 
 _User = orm.Model
 
 
 class ModelTokenAuth(BaseTokenAuth):
-    model = auth_models.User
+    model = users_models.User
 
     async def find_user(self, username: str) -> typing.Optional[_User]:
         try:
@@ -18,7 +17,7 @@ class ModelTokenAuth(BaseTokenAuth):
         except orm.NoMatch:
             return None
 
-    async def verify(self, token: str) -> typing.Optional[auth.BaseUser]:
+    async def verify(self, token: str) -> typing.Optional[users_models.User]:
         user = await self.model.verify_auth_token(token)
         if user:
             return user

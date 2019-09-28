@@ -4,13 +4,13 @@ from starlette.middleware.authentication import AuthenticationMiddleware
 from starlette.responses import PlainTextResponse
 from starlette.routing import Mount
 
-from users import UsersApp, auth
-from warehouse import WarehouseApp
+from starlette_api.users import UsersApp, auth
+from starlette_api.warehouse import WarehouseApp
 
 from . import settings
 from .database import database
 
-routes = [Mount("/users", app=UsersApp), Mount("/", app=WarehouseApp)]
+routes = [Mount("/", app=WarehouseApp), Mount("/users", app=UsersApp)]
 
 app = Starlette(routes=routes)
 app.debug = settings.DEBUG
@@ -22,12 +22,12 @@ app.add_middleware(
 
 
 @app.on_event("startup")
-async def startup():
+async def startup() -> None:
     await database.connect()
 
 
 @app.on_event("shutdown")
-async def shutdown():
+async def shutdown() -> None:
     await database.disconnect()
 
 

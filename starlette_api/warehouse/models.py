@@ -1,7 +1,7 @@
 import orm
 
 from starlette_api.database import database, metadata
-from users import models as users_models
+from starlette_api.users import models as users_models
 
 
 class Organization(orm.Model):
@@ -14,7 +14,7 @@ class Organization(orm.Model):
     user = orm.ForeignKey(users_models.User)
 
     @classmethod
-    async def get_or_create(cls, data, **kwargs):
+    async def get_or_create(cls, data: dict, **kwargs) -> "Organization":
         try:
             return await cls.objects.get(id=data["id"])
         except:
@@ -29,12 +29,8 @@ class Shelf(orm.Model):
     organization = orm.ForeignKey(Organization)
     size = orm.Integer()
 
-    @property
-    async def available_size(self):
-        return await Box.objects.filter(shelf=self).count()
-
     @classmethod
-    async def get_or_create(cls, data, **kwargs):
+    async def get_or_create(cls, data: dict, **kwargs) -> "Shelf":
         try:
             return await cls.objects.get(id=data["id"])
         except:
@@ -49,7 +45,7 @@ class Box(orm.Model):
     shelf = orm.ForeignKey(Shelf)
 
     @classmethod
-    async def get_or_create(cls, data, **kwargs):
+    async def get_or_create(cls, data: dict, **kwargs) -> "Box":
         try:
             return await cls.objects.get(id=data["id"])
         except:
